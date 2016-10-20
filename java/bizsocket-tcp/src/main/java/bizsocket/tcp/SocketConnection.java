@@ -1,5 +1,11 @@
 package bizsocket.tcp;
 
+import bizsocket.logger.Logger;
+import bizsocket.logger.LoggerFactory;
+import okio.BufferedSink;
+import okio.BufferedSource;
+import okio.Okio;
+
 import java.io.EOFException;
 import java.io.IOException;
 import java.net.Socket;
@@ -8,11 +14,6 @@ import java.util.Collection;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.CopyOnWriteArrayList;
-import bizsocket.logger.Logger;
-import bizsocket.logger.LoggerFactory;
-import okio.BufferedSink;
-import okio.BufferedSource;
-import okio.Okio;
 
 /**
  * Creates a socket connection to a tcp server.
@@ -72,7 +73,6 @@ public abstract class SocketConnection implements Connection, ReconnectionManage
             connect();
         } catch (Exception e) {
             e.printStackTrace();
-
             notifyConnectException(e);
             return false;
         }

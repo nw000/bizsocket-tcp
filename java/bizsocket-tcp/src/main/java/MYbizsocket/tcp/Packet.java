@@ -37,9 +37,67 @@ public abstract class Packet {
 
     public abstract int getCommand();
 
-    public abstract void setPacketId(String packetID) ;
+    public abstract void setPacketId(String packetID);
 
     public abstract void setCommand(int command);
 
+    public String nextPacketID() {
+        if (longPacketId == Long.MAX_VALUE) {
+            longPacketId = Long.MAX_VALUE;
+        }
+
+        return String.valueOf(Long.valueOf(longPacketId));
+    }
+
+    public void onSendSuccessful() {
+        LOGGER.debug("-------------------send packet: " + getCommand() + " ,desc: " + getDescription() + ", id: " + getPacketID());
+        LOGGER.debug("-------------------send content: " + getContent());
+    }
+
+    public void onReceiveFromServer() {
+
+    }
+
+    public void onDispatch() {
+        LOGGER.debug("-------------------send packet: " + getCommand() + " ,desc: " + getDescription() + ", id: " + getPacketID());
+        LOGGER.debug("-------------------send content: " + getContent());
+    }
+
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
