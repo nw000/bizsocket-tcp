@@ -55,7 +55,6 @@ public class WPBClientForMockServer extends SocketConnection implements PacketFa
             }
         });
         client.connectAndStartWatch();
-
         while (true) {
             try {
                 String json = "{\"productId\" : \"1\",\"isJuan\" : \"0\",\"type\" : \"2\",\"sl\" : \"1\"}";

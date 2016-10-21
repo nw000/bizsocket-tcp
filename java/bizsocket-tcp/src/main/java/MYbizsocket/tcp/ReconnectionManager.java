@@ -17,6 +17,77 @@ public class ReconnectionManager {
 
     private boolean needRecnect = false;
 
+    private ReconnectHandler reconnectHandler;
+
+    private ReconnectionManager.ReconnectionThread reconnectionThread;
+
+    public void bind(SocketConnection connection) {
+        this.connection = connection;
+        this.connection.addConnectionListener(connectionListener);
+    }
+
+
+    public void unbind() {
+        if (connection != null) {
+            this.connection.removeConnectionListener(connectionListener);
+        }
+        this.connection = null;
+
+    }
+
+    public boolean isNeedRecnect() {
+        return needRecnect;
+    }
+
+    public boolean isReconnectionAllowed() {
+        return !this.done;
+    }
+
+    public void setDone(boolean done) {
+        this.done = done;
+
+        if (done) {
+            if (connection != null) {
+                connection.removeConnectionListener(connectionListener);
+                connection = null;
+            }
+            if (reconnectionThread != null) {
+                reconnectionThread.interrupt();
+                reconnectionThread = null;
+            }
+        }
+    }
+
+    public ReconnectHandler getReconnectHandler() {
+        return reconnectHandler;
+    }
+
+    public void setReconnectHandler(ReconnectHandler reconnectHandler) {
+        this.reconnectHandler = reconnectHandler;
+    }
+
+    public synchronized void reconnect() {
+        if (!this.isReconnectionAllowed()) {
+            return;
+        }
+        if (this.reconnectionThread != null && this.reconnectionThread.isAlive()) {
+            return;
+        }
+        this.reconnectionThread = new ReconnectionThread();
+        this.reconnectionThread.setName("Reconnection Manager");
+        this.reconnectionThread.setDaemon(true);
+        this.reconnectionThread.start();
+
+    }
+
+
+    class ReconnectionThread extends Thread {
+        @Override
+        public void run() {
+
+        }
+    }
+
     private ConnectionListener connectionListener = new ConnectionListener() {
         @Override
         public void connected(SocketConnection socketConnection) {
@@ -45,16 +116,7 @@ public class ReconnectionManager {
         }
     };
 
-    public void bind(SocketConnection connection) {
-        this.connection = connection;
-        //this.connection
-    }
-
     public void setReconnectHandler(SocketConnection socketConnection) {
-
-    }
-
-    public void unbind() {
 
     }
 
@@ -62,15 +124,18 @@ public class ReconnectionManager {
     class ReconnectionThread extends Thread {
         private int attempts = 0;
 
-        ReconnectionThread() {};
+        ReconnectionThread() {
+        }
+
+        ;
 
         public void resetAttempts() {
             this.attempts = 0;
         }
 
         private int timeDelay() {
-            ++ this.attempts;
-            return this.attempts > 9 ? ReconnectionManager.this.RANDOM_BASE * 3:
+            ++this.attempts;
+            return this.attempts > 9 ? ReconnectionManager.this.RANDOM_BASE * 3 :
                     ReconnectionManager.this.RANDOM_BASE;
         }
 
@@ -78,6 +143,10 @@ public class ReconnectionManager {
         public void run() {
 
         }
+    }
+
+    public interface ReconnectHandler {
+        void doReconnect(SocketConnection connection);
     }
 
 }

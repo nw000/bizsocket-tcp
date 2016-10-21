@@ -25,6 +25,7 @@ public class WPBPacket extends Packet {
     public String content;
 
     public WPBPacket() {
+
     }
 
 

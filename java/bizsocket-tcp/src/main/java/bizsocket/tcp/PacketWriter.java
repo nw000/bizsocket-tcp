@@ -1,12 +1,12 @@
 package bizsocket.tcp;
 
-import java.io.IOException;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
-
 import bizsocket.logger.Logger;
 import bizsocket.logger.LoggerFactory;
 import okio.BufferedSink;
+
+import java.io.IOException;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 
 /**
  * Writes packets to a tcp server. Packets are sent using a dedicated thread. Packet
@@ -140,14 +140,6 @@ class PacketWriter {
                     }
                 }
             }
-
-//            try {
-//                if (!done) {
-//                    Thread.sleep(500);
-//                }
-//            } catch (InterruptedException e) {
-//
-//            }
         }
     }
 
