@@ -1,15 +1,17 @@
-package MYbizsocket.tcp;
+package mybizsocket;
 
 /**
- * Created by dxjf on 16/10/19.
+ * Created by nw on 17/3/28.
  */
 public interface ConnectionListener {
 
-    void connected(SocketConnection socketConnection);
+    void connected(SocketConnection connection);
 
     void connectionClosed();
 
     void connectionClosedOnError(Exception e);
 
     void reconnectingIn(int seconds);
+
+
 }

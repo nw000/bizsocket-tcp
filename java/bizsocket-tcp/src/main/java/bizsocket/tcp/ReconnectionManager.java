@@ -22,7 +22,6 @@ public class ReconnectionManager {
     public void bind(SocketConnection connection) {
         this.connection = connection;
         this.connection.removeConnectionListener(connectionListener);
-        this.connection = connection;
         this.connection.addConnectionListener(connectionListener);
     }
 
